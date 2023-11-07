@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New Customer</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f7f7f7;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Add a Bootstrap navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Registration Portal</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Register New Customer</h2>
+        <form id="customerForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="complaint">Complaint</label>
+                <input type="text" class="form-control" id="complaint" name="complaint" required>
+            </div>
+            <div class="form-group">
+                <label for="totalAmount">Total amount:</label>
+                <input type="text" class="form-control" id="totalAmount" name="totalAmount" required>
+            </div>
+            <div class="form-group">
+                <label for="paidAmount">Paid amount:</label>
+                <input type="text" class="form-control" id="paidAmount" name="paidAmount" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" class="form-control" id="dob" name="dob" required>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="submitForm()">Register</button>
+        </form>
+    </div>
+	<div id="successMessage" class="custom-success-message"></div>
+	<style>
+	.custom-success-message {
+    	background-color: #4CAF50; /* Green background color */
+    	color: white; /* White text color */
+    	font-size: 16px;
+    	padding: 10px;
+    	text-align: center;
+    	display: none; /* Initially hide the message */
+	}
+	</style>
+    <script>
+		function showSuccessMessage(message) {
+   		var successMessage = document.getElementById("successMessage");
+   		successMessage.innerHTML = message; // Set the message content
+     	successMessage.style.display = "block"; // Display the message
+     	    // Automatically hide the message after 5 seconds (5000 milliseconds)
+    	setTimeout(function () {
+      		  successMessage.style.display = "none"; // Hide the message
+   		 }, 2000);
+		}
+		
+		
+        function submitForm() {
+            var form = document.getElementById("customerForm");
+            var formData = new FormData(form);
+            var jsonObject = {};
+
+            formData.forEach((value, key) => {
+                if (key === "dob") {
+                    var dateInput = form.elements[key];
+                    var dateValue = new Date(dateInput.value);
+                    var formattedDate = dateValue.toISOString().split('T')[0];
+                    jsonObject[key] = formattedDate;
+                } else {
+                    jsonObject[key] = value;
+                }
+            });
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/register");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify(jsonObject));
+
+            xhr.onload = function () {
+               if (xhr.status === 200) {
+                  // Registration was successful, show the success message
+                  //window.prompt("Registration successful!");
+                  showSuccessMessage("Registration Successful!");
+                  //successMessage.style.display = "block";
+               } else {
+                  // Handle errors here
+              }
+            };
+        }
+    </script>
+    <div id="successMessage" style="display: none;">
+    	<p>Registration successful!</p>
+	</div>
+    <!-- Add Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

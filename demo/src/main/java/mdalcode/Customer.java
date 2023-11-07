@@ -1,5 +1,8 @@
 package mdalcode;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -8,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity //for Hibernate
 @Table
@@ -26,17 +30,25 @@ public class Customer {
     private Long id;
     private String name;
     private String email;
+    private String complaint;
+    private int totalAmount;
+    private int paidAmount;
+    private LocalDate dob;
+    @Transient
     private int age;
 
     public Customer() {
         // Default no-args constructor required by JPA
     }
 
-    public Customer(long id, String name, String email, int age) {
+    public Customer(long id, String name, String email, String complaint, int totalAmount, int paidAmount, LocalDate dob) {
     	this.id = id;
         this.name = name;
         this.email = email;
-        this.age = age;
+        this.complaint = complaint;
+        this.totalAmount = totalAmount;
+        this.paidAmount = paidAmount;
+        this.dob = dob;
     }
 
     // Getter methods
@@ -44,22 +56,50 @@ public class Customer {
         return id;
     }
 
+
     public String getName() {
         return name;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public int getAge() {
-        return age;
-    }
+    
     public void setName(String name) {
     	this.name = name;
     }
+    
+    public String getEmail() {
+        return email;
+    }
+    
     public void setEmail(String email) {
     	this.email = email;
+    }
+    public String getComplaint() 
+    {
+    	return complaint;
+    }
+    public void setComplaint(String complaint) 
+    {
+    	this.complaint = complaint;
+    }
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+    public int getPaidAmount() {
+        return paidAmount;
+    }
+    public void setPaidAmount(int paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+    
+    public int getAge() {
+        return Period.between(dob, LocalDate.now()).getYears();
+    }
+    
+    public void setdob(LocalDate dob) 
+    {
+    	this.dob = dob;
     }
     // Setter methods (if needed)
 

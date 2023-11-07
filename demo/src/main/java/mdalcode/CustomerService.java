@@ -17,7 +17,7 @@ public class CustomerService {
 	public CustomerService(CustomerRepository customerRepository) {
 		this.customerRepository = customerRepository;
 	}
-	public List<Customer> getStudents() 
+	public List<Customer> getCustomers() 
 	{
 		
 		return customerRepository.findAll();
